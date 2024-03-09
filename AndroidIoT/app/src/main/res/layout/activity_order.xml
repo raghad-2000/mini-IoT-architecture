@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".OrderActivity">
+
+    <Button
+        android:id="@+id/buttonYXT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Envoyer YXT" />
+
+    <Button
+        android:id="@+id/buttonTXY"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Envoyer TXY" />
+
+    <Button
+        android:id="@+id/navigateToHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Home" />
+
+</LinearLayout>
