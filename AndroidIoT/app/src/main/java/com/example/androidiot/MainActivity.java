@@ -1,6 +1,7 @@
 package com.example.androidiot;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -144,6 +145,10 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }*/
 
+    public String loadDataOrder() {
+        SharedPreferences sharedPreferences = getSharedPreferences("AppSettings", MODE_PRIVATE);
+        return sharedPreferences.getString("DataOrder", "TXY"); // Valeur par défaut si non trouvée
+    }
     // Commentaire: Modifie l'affichage en fonction de la tram reçue
     public void DisplayData(String receivedData) {
         //String receivedData = new String(data.getData(), 0, data.getLength());
@@ -155,14 +160,26 @@ public class MainActivity extends AppCompatActivity {
             Log.i("Received Data", receivedData);
             // Mettez à jour votre TextView ou d'autres éléments UI ici
             if(receivedData.length() < 7) return;
-            TextView textView1 = findViewById(R.id.textView1);
-            textView1.setText("Temperature: " + receivedData.charAt(1) + receivedData.charAt(2) + "°C");
+            String dataOrder = loadDataOrder();
+            if (dataOrder.equals("TXY")) {
+                TextView textView1 = findViewById(R.id.textView1);
+                textView1.setText("Temperature: " + receivedData.charAt(1) + receivedData.charAt(2) + "°C");
 
-            TextView textView2 = findViewById(R.id.textView2);
-            textView2.setText("X: " + receivedData.charAt(4));
+                TextView textView2 = findViewById(R.id.textView2);
+                textView2.setText("X: " + receivedData.charAt(4));
 
-            TextView textView3 = findViewById(R.id.textView3);
-            textView3.setText("Y: " + receivedData.charAt(6));
+                TextView textView3 = findViewById(R.id.textView3);
+                textView3.setText("Y: " + receivedData.charAt(6));
+            } else {
+                TextView textView1 = findViewById(R.id.textView1);
+                textView1.setText("Y: " + receivedData.charAt(6));
+                TextView textView2 = findViewById(R.id.textView2);
+                textView2.setText("X: " + receivedData.charAt(4));
+                TextView textView3 = findViewById(R.id.textView3);
+                textView3.setText("Temperature: " + receivedData.charAt(1) + receivedData.charAt(2) + "°C");
+
+
+            }
         });
     }
     private void stopListeningAndCloseSocket() {

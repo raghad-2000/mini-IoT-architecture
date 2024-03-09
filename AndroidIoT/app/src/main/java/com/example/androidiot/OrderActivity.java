@@ -1,6 +1,7 @@
 package com.example.androidiot;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -28,13 +29,18 @@ public class OrderActivity extends AppCompatActivity {
         port = getIntent().getIntExtra("PORT", 10000); // Utiliser 10000 comme port par défaut si non spécifié
 
 
-        findViewById(R.id.buttonYXT).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        findViewById(R.id.buttonYXT).setOnClickListener(v -> {
                 String data = "YXT";
                 SendData(data, port, ipAddress);
-            }
+                saveDataOrder(data);
         });
+
+        findViewById(R.id.buttonTXY).setOnClickListener(v -> {
+            String data = "TXY";
+            SendData(data, port, ipAddress);
+            saveDataOrder(data);
+        });
+
 
         findViewById(R.id.navigateToHome).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,13 +53,15 @@ public class OrderActivity extends AppCompatActivity {
             }
         });
 
-        // Commentaire: Utilisation d'une expression lambda pour simplifier le code
-        findViewById(R.id.buttonTXY).setOnClickListener(v -> {
-            String data = "TXY";
-            SendData(data, port, ipAddress);
-        });
+
     }
 
+    public void saveDataOrder(String order) {
+        SharedPreferences sharedPreferences = getSharedPreferences("AppSettings", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("DataOrder", order); // "TXY" ou "YXT", etc.
+        editor.apply();
+    }
     // Commentaire: Envoi X fois la data
     public void SendData(final String Sdata, final int port, final String addressText) {
         new Thread(() -> {
